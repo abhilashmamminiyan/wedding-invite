@@ -173,7 +173,7 @@ export const PRESET_MODERN: WeddingData = {
 
 /**
  * SECURE SERVER-SIDE FETCHER
- * Never passes private credentials, sheet IDs, or respondent personal metadata to the client.
+ * Reads from Google Sheets securely without exposing Sheet IDs or client details.
  */
 export async function getWeddingDataBySlug(slug: string): Promise<WeddingData | null> {
   const normalized = (slug || '').toLowerCase().trim();
@@ -186,31 +186,58 @@ export async function getWeddingDataBySlug(slug: string): Promise<WeddingData | 
     return PRESET_MODERN;
   }
 
-  // 2. Fetch from private Server Environment (Google Sheet or CSV)
+  // 2. Fetch from Google Sheet CSV
   const sheetId = process.env.GOOGLE_SHEET_ID;
   const sheetCsvUrl = process.env.GOOGLE_SHEET_CSV_URL;
 
   if (sheetCsvUrl || sheetId) {
     try {
       const url = sheetCsvUrl || `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
-      const response = await fetch(url, { next: { revalidate: 60 } }); // Cache for 60 seconds (ISR)
+      console.log(`[Store] Fetching Google Sheet responses from: ${url.replace(sheetId || '', '[REDACTED_SHEET_ID]')}`);
+      
+      const response = await fetch(url, { next: { revalidate: 15 } }); // Cache for 15s
 
-      if (response.ok) {
+      if (!response.ok) {
+        console.error(
+          `[Store Error] Google Sheet returned HTTP ${response.status}. ` +
+          `Make sure the Google Sheet sharing setting is 'Anyone with the link can view' (Viewer)!`
+        );
+      } else {
         const csvText = await response.text();
         const parsed = parseGoogleFormCsv(csvText, normalized);
-        if (parsed) return parsed;
+        if (parsed) {
+          console.log(`[Store Success] Successfully resolved invitation for slug: ${normalized}`);
+          return parsed;
+        } else {
+          console.warn(`[Store Warning] Slug '${normalized}' not found in Google Sheet rows.`);
+        }
       }
-    } catch {
-      // In case of error, silently fallback without leaking server error details to client
+    } catch (err: any) {
+      console.error('[Store Error] Failed to fetch Google Sheet CSV:', err.message);
     }
+  } else {
+    console.warn('[Store Warning] Neither GOOGLE_SHEET_ID nor GOOGLE_SHEET_CSV_URL is set in Vercel Environment Variables.');
   }
 
-  // Fallback to default demo if slug is "demo" or unknown
+  // Fallback demo for generic tests
   if (normalized === 'demo' || normalized === '') {
     return PRESET_CLASSICAL;
   }
 
   return null;
+}
+
+/**
+ * Helper to find field value across multiple possible column name patterns
+ */
+function findVal(rowObj: Record<string, string>, patterns: string[]): string {
+  for (const pattern of patterns) {
+    const key = Object.keys(rowObj).find((k) => k.toLowerCase().includes(pattern.toLowerCase()));
+    if (key && rowObj[key]) {
+      return rowObj[key].trim();
+    }
+  }
+  return '';
 }
 
 /**
@@ -221,6 +248,7 @@ function parseGoogleFormCsv(csv: string, targetSlug: string): WeddingData | null
   if (rows.length < 2) return null;
 
   const headers = rows[0].map((h) => h.toLowerCase().trim());
+  const foundSlugs: string[] = [];
 
   for (let i = 1; i < rows.length; i++) {
     const row = rows[i];
@@ -231,69 +259,135 @@ function parseGoogleFormCsv(csv: string, targetSlug: string): WeddingData | null
       rowObj[header] = row[index] || '';
     });
 
-    const groomName = rowObj['groom name'] || rowObj['groom'] || 'Groom';
-    const brideName = rowObj['bride name'] || rowObj['bride'] || 'Bride';
-    const rowSlug = (rowObj['custom link slug'] || rowObj['slug'] || `${groomName}-${brideName}`)
-      .toLowerCase()
-      .replace(/[^a-z0-9-]/g, '-');
+    const groomName = findVal(rowObj, ['groom full name', 'groom name', 'groom']) || 'Groom';
+    const brideName = findVal(rowObj, ['bride full name', 'bride name', 'bride']) || 'Bride';
+    const customSlug = findVal(rowObj, ['custom link slug', 'slug', 'custom url']);
 
-    if (rowSlug === targetSlug) {
-      const templateVal = (rowObj['template'] || '').toLowerCase().includes('modern')
+    const autoSlug1 = `${groomName}-${brideName}`.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    const autoSlug2 = `${groomName}weds${brideName}`.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    const cleanCustomSlug = customSlug.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+
+    foundSlugs.push(cleanCustomSlug || autoSlug1);
+
+    // Flexible slug matching: matches custom slug, auto slug (e.g. abhilash-athulya), or direct concatenation
+    const isMatch =
+      (cleanCustomSlug && targetSlug === cleanCustomSlug) ||
+      targetSlug === autoSlug1 ||
+      targetSlug.replace(/-/g, '') === autoSlug2 ||
+      targetSlug === autoSlug2;
+
+    if (isMatch) {
+      const templateChoice = findVal(rowObj, ['template', 'choose your wedding']);
+      const templateVal = templateChoice.toLowerCase().includes('modern')
         ? 'modern-romance'
         : 'kerala-classical';
 
-      const heroDrive = getDriveImageUrl(rowObj['hero photo'] || rowObj['photo 1'] || rowObj['drive link'] || '');
-      const inviteDrive = getDriveImageUrl(rowObj['invitation photo'] || rowObj['photo 2'] || '');
-      const bannerDrive = getDriveImageUrl(rowObj['banner photo'] || rowObj['photo 3'] || '');
-      const galleryLinks = (rowObj['gallery photos'] || '')
-        .split(',')
-        .map((u) => u.trim())
-        .filter(Boolean)
-        .map((u, idx) => ({ url: getDriveImageUrl(u), alt: `Moment ${idx + 1}` }));
+      const heroDrive = getDriveImageUrl(findVal(rowObj, ['hero photo', 'photo 1', 'drive link']));
+      const inviteDrive = getDriveImageUrl(findVal(rowObj, ['invitation photo', 'photo 2']));
+      const bannerDrive = getDriveImageUrl(findVal(rowObj, ['scenic banner', 'banner photo', 'photo 3']));
+      const galleryVal = findVal(rowObj, ['gallery photos', 'gallery']);
+      const galleryLinks = galleryVal
+        ? galleryVal
+            .split(',')
+            .map((u) => u.trim())
+            .filter(Boolean)
+            .map((u, idx) => ({ url: getDriveImageUrl(u), alt: `Wedding Moment ${idx + 1}` }))
+        : [];
+
+      const ceremonyDate = findVal(rowObj, ['ceremony date', 'wedding date']) || 'Wedding Day';
+      const muhurthamTiming = findVal(rowObj, ['muhurtham timing', 'timing window', 'muhurtham']) || '11:00 AM';
+      const venueName = findVal(rowObj, ['ceremony venue name', 'venue name']) || 'Auditorium';
+      const venueLocation = findVal(rowObj, ['ceremony venue location', 'venue location', 'city']) || '';
+      const googleMapsUrl = findVal(rowObj, ['ceremony google maps', 'maps link', 'map']) || `https://maps.google.com/?q=${encodeURIComponent(venueName + ' ' + venueLocation)}`;
+
+      const groomParents = findVal(rowObj, ["groom's parents", 'groom parents']) || 'Parents';
+      const brideParents = findVal(rowObj, ["bride's parents", 'bride parents']) || 'Parents';
+      const groomAddress = (findVal(rowObj, ["groom's family address", 'groom address']) || '').split('\n').map((s) => s.trim()).filter(Boolean);
+      const brideAddress = (findVal(rowObj, ["bride's family address", 'bride address']) || '').split('\n').map((s) => s.trim()).filter(Boolean);
+
+      const receptionDate = findVal(rowObj, ['reception date']);
+      const receptionTiming = findVal(rowObj, ['reception timing']);
+      const receptionVenue = findVal(rowObj, ['reception venue name']);
+      const receptionLocation = findVal(rowObj, ['reception venue location']);
+      const receptionMap = findVal(rowObj, ['reception google maps']);
+
+      const hasReception = Boolean(receptionVenue || receptionDate);
+
+      const musicUrl = findVal(rowObj, ['background music', 'mp3', 'music link']);
+
+      // Target UTC calculation for countdown
+      let targetIso = new Date().toISOString();
+      try {
+        // Handle DD/MM/YYYY or YYYY-MM-DD
+        const dateParts = ceremonyDate.split('/');
+        if (dateParts.length === 3) {
+          const d = parseInt(dateParts[0], 10);
+          const m = parseInt(dateParts[1], 10) - 1;
+          const y = parseInt(dateParts[2], 10);
+          targetIso = new Date(Date.UTC(y, m, d, 6, 0, 0)).toISOString(); // 11:30 AM IST = 06:00 UTC
+        } else {
+          targetIso = new Date(ceremonyDate).toISOString();
+        }
+      } catch {
+        targetIso = new Date().toISOString();
+      }
 
       return {
         slug: targetSlug,
         template: templateVal,
         monogram: `${groomName.charAt(0).toUpperCase()} & ${brideName.charAt(0).toUpperCase()}`,
-        hashtag: rowObj['wedding hashtag'] || `#${groomName}Weds${brideName}`,
+        hashtag: `#${groomName.replace(/\s+/g, '')}Weds${brideName.replace(/\s+/g, '')}`,
         couple: {
           groom: {
             name: groomName,
-            parents: rowObj["groom's parents"] || 'Parents',
-            address: (rowObj["groom's address"] || '').split('\n').map((s) => s.trim()).filter(Boolean),
+            parents: groomParents,
+            address: groomAddress.length > 0 ? groomAddress : ['Home Address'],
           },
           bride: {
             name: brideName,
-            parents: rowObj["bride's parents"] || 'Parents',
-            address: (rowObj["bride's address"] || '').split('\n').map((s) => s.trim()).filter(Boolean),
+            parents: brideParents,
+            address: brideAddress.length > 0 ? brideAddress : ['Home Address'],
           },
         },
         overview: {
-          eyebrow: rowObj['top message'] || 'With the blessings of our families',
-          weddingDateFormatted: rowObj['wedding date formatted'] || 'Wedding Day',
-          placesFormatted: rowObj['places / locations'] || '',
+          eyebrow: findVal(rowObj, ['top message']) || 'With the blessings of our families',
+          weddingDateFormatted: ceremonyDate,
+          placesFormatted: venueLocation || 'Kerala',
         },
         invitationNote: {
           eyebrow: 'You are invited',
-          heading: rowObj['invitation heading'] || 'Together With Our Families',
-          lead: rowObj['invitation lead text'] || `We invite you to celebrate with us.`,
-          closing: rowObj['invitation closing'] || 'Your presence and blessings will make our happiness complete.',
+          heading: 'Together With Our Families',
+          lead: findVal(rowObj, ['invitation lead message', 'lead text']) || `With love and happiness, we invite you to join us as ${groomName} and ${brideName} begin their beautiful journey together.`,
+          closing: 'Your presence and blessings will make our happiness complete.',
         },
         events: {
           ceremony: {
-            title: rowObj['ceremony title'] || 'The Wedding Ceremony',
-            eyebrow: 'Ceremony',
-            dateStr: rowObj['ceremony date'] || rowObj['wedding date formatted'] || '',
-            timeWindowStr: rowObj['muhurtham timing'] || '11:00 AM',
-            venueName: rowObj['ceremony venue name'] || 'Auditorium',
-            venueLocation: rowObj['ceremony venue address'] || '',
-            googleMapsUrl: rowObj['google maps link'] || '',
-            startIsoUtc: rowObj['ceremony start iso'] || new Date().toISOString(),
-            endIsoUtc: rowObj['ceremony end iso'] || new Date().toISOString(),
+            title: 'The Wedding Ceremony',
+            eyebrow: 'Auspicious Muhurtham',
+            dateStr: ceremonyDate,
+            timeWindowStr: muhurthamTiming,
+            venueName: venueName,
+            venueLocation: venueLocation,
+            googleMapsUrl: googleMapsUrl,
+            startIsoUtc: targetIso,
+            endIsoUtc: new Date(new Date(targetIso).getTime() + 45 * 60 * 1000).toISOString(),
           },
+          reception: hasReception
+            ? {
+                title: 'Wedding Reception',
+                eyebrow: 'Evening Celebration',
+                dateStr: receptionDate || ceremonyDate,
+                timeWindowStr: receptionTiming || '6:00 PM – 10:00 PM',
+                venueName: receptionVenue || 'Reception Hall',
+                venueLocation: receptionLocation || venueLocation,
+                googleMapsUrl: receptionMap || googleMapsUrl,
+                startIsoUtc: targetIso,
+                endIsoUtc: new Date(new Date(targetIso).getTime() + 4 * 3600 * 1000).toISOString(),
+              }
+            : undefined,
         },
         countdown: {
-          targetIsoUtc: rowObj['ceremony start iso'] || new Date().toISOString(),
+          targetIsoUtc: targetIso,
           venueTimezone: 'Asia/Kolkata',
           label: 'Until the Muhurtham',
         },
@@ -303,14 +397,21 @@ function parseGoogleFormCsv(csv: string, targetSlug: string): WeddingData | null
           banner: bannerDrive || PRESET_CLASSICAL.photos.banner,
           gallery: galleryLinks.length > 0 ? galleryLinks : PRESET_CLASSICAL.photos.gallery,
         },
+        audio: {
+          enabled: Boolean(musicUrl),
+          title: 'Wedding Music',
+          src: musicUrl || PRESET_CLASSICAL.audio?.src || '',
+        },
         meta: {
           ogTitle: `${groomName} & ${brideName} | Wedding Invitation`,
-          ogDescription: `Wedding of ${groomName} & ${brideName}. Join our celebration.`,
+          ogDescription: `Wedding invitation for ${groomName} & ${brideName}. Join our celebration on ${ceremonyDate}.`,
+          ogImage: heroDrive || PRESET_CLASSICAL.photos.hero,
         },
       };
     }
   }
 
+  console.log('[Store Warning] Checked slugs in Google Sheet:', foundSlugs, 'Target was:', targetSlug);
   return null;
 }
 
