@@ -42,7 +42,7 @@ function createWeddingSystem() {
     .setRequired(true);
   form.addTextItem()
     .setTitle("Custom Link Slug (Optional)")
-    .setHelpText("e.g., 'vishnu-navya' for https://your-site.vercel.app/invite/vishnu-navya");
+    .setHelpText("e.g., 'aarav-meera' for https://your-site.vercel.app/invite/aarav-meera");
 
   // SECTION 2: Template Selection
   form.addSectionHeaderItem()

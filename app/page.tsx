@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Sparkles, Heart, ShieldCheck, Mail, ArrowRight, CheckCircle2, Play } from 'lucide-react';
+import { Sparkles, ShieldCheck, Play } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -38,19 +38,19 @@ export default function HomePage() {
           <div className="bg-cream rounded-3xl border border-borderTone overflow-hidden shadow-card hover:shadow-2xl transition-all duration-300 flex flex-col">
             <div className="relative aspect-[16/10] bg-champagne overflow-hidden">
               <img
-                src="https://vishnuwedsnavya.com/assets/images/wedding-02-1200.jpg"
-                alt="Kerala Classical Wedding Template"
+                src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80"
+                alt="Classical Wedding Template"
                 className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-4 left-4 bg-espresso/90 text-cream px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
-                Template 1 · Classical
+                Template 1 · Classical Ivory
               </div>
             </div>
             <div className="p-8 flex-1 flex flex-col justify-between space-y-6">
               <div>
                 <h3 className="font-display text-3xl font-semibold text-espresso">Kerala Classical Ivory</h3>
                 <p className="text-sm text-espresso-soft mt-2 leading-relaxed">
-                  Inspired by traditional Kerala elegance (as seen on <em>vishnuwedsnavya.com</em>). Features arched portrait frames, Cormorant Garamond typography, hand-drawn floral sprigs, Muhurtham live countdown, Google Calendar integration, and ambient audio dock.
+                  Inspired by traditional classical elegance. Features arched portrait frames, Cormorant Garamond typography, hand-drawn floral sprigs, Muhurtham live countdown, Google Calendar integration, and ambient audio dock.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-ivory rounded-md border border-borderTone text-gold-ink">Ivory &amp; Gold</span>
@@ -62,14 +62,14 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link
-                  href="/preview/vishnu-navya"
+                  href="/preview/aarav-meera"
                   className="flex-1 py-3 px-4 rounded-xl bg-espresso text-cream font-semibold text-xs uppercase tracking-wider text-center hover:bg-gold-ink transition-colors flex items-center justify-center gap-2"
                 >
                   <Play className="w-3.5 h-3.5" />
                   View Draft Preview
                 </Link>
                 <Link
-                  href="/invite/vishnu-navya"
+                  href="/invite/aarav-meera"
                   className="flex-1 py-3 px-4 rounded-xl border border-espresso/40 text-espresso font-semibold text-xs uppercase tracking-wider text-center hover:bg-espresso/5 transition-colors"
                 >
                   View Live Invite
@@ -82,7 +82,7 @@ export default function HomePage() {
           <div className="bg-cream rounded-3xl border border-borderTone overflow-hidden shadow-card hover:shadow-2xl transition-all duration-300 flex flex-col">
             <div className="relative aspect-[16/10] bg-[#FAF4ED] overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80"
+                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80"
                 alt="Modern Romance Wedding Template"
                 className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
               />
@@ -94,7 +94,7 @@ export default function HomePage() {
               <div>
                 <h3 className="font-display text-3xl font-semibold text-espresso">Modern Floral Romance</h3>
                 <p className="text-sm text-espresso-soft mt-2 leading-relaxed">
-                  Clean, modern romantic aesthetic (tailored for Athira &amp; Jithin). Features soft rose and champagne hues, contemporary clean card layouts, floating interactive music, dual event cards with direct maps, and mobile-friendly gallery.
+                  Clean, modern romantic aesthetic. Features soft rose and champagne hues, contemporary clean card layouts, floating interactive music, dual event cards with direct maps, and mobile-friendly gallery.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-ivory rounded-md border border-borderTone text-[#A66360]">Rose Champagne</span>
@@ -106,14 +106,14 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link
-                  href="/preview/athira-jithin"
+                  href="/preview/arjun-diya"
                   className="flex-1 py-3 px-4 rounded-xl bg-[#A66360] text-white font-semibold text-xs uppercase tracking-wider text-center hover:bg-[#8A4F4C] transition-colors flex items-center justify-center gap-2"
                 >
                   <Play className="w-3.5 h-3.5" />
                   View Draft Preview
                 </Link>
                 <Link
-                  href="/invite/athira-jithin"
+                  href="/invite/arjun-diya"
                   className="flex-1 py-3 px-4 rounded-xl border border-espresso/40 text-espresso font-semibold text-xs uppercase tracking-wider text-center hover:bg-espresso/5 transition-colors"
                 >
                   View Live Invite

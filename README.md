@@ -1,6 +1,6 @@
 # Luxury Wedding Invitation Platform (Next.js + Google Form + Vercel)
 
-A customizable, privacy-first digital wedding invitation platform inspired by [vishnuwedsnavya.com](https://vishnuwedsnavya.com/).
+A customizable, privacy-first digital wedding invitation platform featuring automated draft preview delivery, multi-template styling, and payment activation gating.
 
 ---
 
@@ -30,17 +30,14 @@ A customizable, privacy-first digital wedding invitation platform inspired by [v
 
 ### 1. Push to GitHub
 ```bash
-cd wedding-invitation-app
-git init
 git add .
-git commit -m "feat: luxury wedding invitation platform"
-git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-git push -u origin main
+git commit -m "feat: privacy cleanup and royalty-free demo presets"
+git push origin main
 ```
 
 ### 2. Import into Vercel
 1. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
-2. Select your GitHub repository.
+2. Select your GitHub repository (`wedding-invite`).
 3. In **Environment Variables**, add the following:
 
 | Variable | Description |
@@ -61,19 +58,9 @@ git push -u origin main
 
 ## 📋 Google Form & Google Apps Script Setup
 
-1. Create a Google Form with fields:
-   - Groom Full Name
-   - Bride Full Name
-   - Contact Email (to receive preview link)
-   - Template Selection (`Kerala Classical` or `Modern Romance`)
-   - Ceremony Date & Muhurtham Timing
-   - Venue Name & Location
-   - Google Drive Folder Link (Photos & Music)
-2. In the Google Sheet linked to the responses:
-   - Go to **Extensions > Apps Script**.
-   - Copy the code from `google-apps-script-integration.js`.
-   - Update `VERCEL_API_URL` and `WEBHOOK_SECRET`.
-   - Add a trigger: **"From spreadsheet" > "On form submit"**.
+1. Open [google-form-setup-automation.js](./google-form-setup-automation.js).
+2. Follow the 1-click script instructions in [script.google.com](https://script.google.com/) to automatically generate your Google Form and linked Google Sheet.
+3. Share the generated Google Form link with your couples.
 
 ---
 

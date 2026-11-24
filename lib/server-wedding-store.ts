@@ -2,36 +2,36 @@ import { WeddingData } from '@/types/wedding';
 import { getDriveImageUrl } from './drive';
 
 /**
- * DEFAULT PRESETS
- * Fallback / Demonstration presets matching reverse-engineered live invitations.
+ * DEFAULT DEMONSTRATION PRESETS
+ * Royalty-free sample data for platform previews and testing.
  */
-export const PRESET_VISHNU_NAVYA: WeddingData = {
-  slug: 'vishnu-navya',
+export const PRESET_CLASSICAL: WeddingData = {
+  slug: 'aarav-meera',
   template: 'kerala-classical',
   themePreset: 'ivory-gold',
-  monogram: 'V & N',
-  hashtag: '#VishnuWedsNavya',
+  monogram: 'A & M',
+  hashtag: '#AaravWedsMeera',
   couple: {
     groom: {
-      name: 'Vishnu',
-      parents: 'S/o Mr Haridas K & Mrs Bindhu Haridas',
-      address: ['Kayyanthala House', 'Peravoor PO', 'Peravoor Theru'],
+      name: 'Aarav',
+      parents: 'S/o Mr K. Raghavan & Mrs Lakshmi Raghavan',
+      address: ['Sreeragam House', 'Civil Station PO', 'Kozhikode, Kerala'],
     },
     bride: {
-      name: 'Navya',
-      parents: 'D/o Mr Suresh M And Prameela Suresh',
-      address: ['Navya Nivas', 'Kannadiparamba PO', 'Kannadiparamba', 'Kannur'],
+      name: 'Meera',
+      parents: 'D/o Mr M. Narayanan & Mrs Saraswathi Narayanan',
+      address: ['Meera Nivas', 'Meenangadi PO', 'Wayanad, Kerala'],
     },
   },
   overview: {
     eyebrow: 'With the blessings of our families',
     weddingDateFormatted: 'Sunday, 13 December 2026',
-    placesFormatted: 'Kannadiparamba · Peravoor',
+    placesFormatted: 'Kozhikode · Wayanad',
   },
   invitationNote: {
     eyebrow: 'You are invited',
     heading: 'Together With Our Families',
-    lead: 'With love and happiness, we invite you to join us as Vishnu and Navya begin their beautiful journey together.',
+    lead: 'With love and happiness, we invite you to join us as Aarav and Meera begin their beautiful journey together.',
     closing: 'With the blessings of our families, we invite you to join us as we celebrate a beautiful new beginning.',
   },
   events: {
@@ -40,9 +40,9 @@ export const PRESET_VISHNU_NAVYA: WeddingData = {
       eyebrow: 'Morning',
       dateStr: 'Sunday, 13 December 2026',
       timeWindowStr: '11:30 AM – 12:15 PM (Muhurtham)',
-      venueName: 'Alokan Auditorium',
-      venueLocation: 'Kannadiparamba, Kannur',
-      googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Alokan%20Auditorium%2C%20Kannadiparamba%2C%20Kannur',
+      venueName: 'Alakapuri Auditorium',
+      venueLocation: 'Civil Station, Kozhikode',
+      googleMapsUrl: 'https://maps.google.com/?q=Kozhikode+Kerala',
       startIsoUtc: '2026-12-13T06:00:00Z',
       endIsoUtc: '2026-12-13T06:45:00Z',
     },
@@ -51,9 +51,9 @@ export const PRESET_VISHNU_NAVYA: WeddingData = {
       eyebrow: 'Evening',
       dateStr: 'Sunday, 13 December 2026',
       timeWindowStr: '6:00 PM – 10:00 PM',
-      venueName: 'Udaya Auditorium',
-      venueLocation: 'Thundiyil, Peravoor',
-      googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Udaya%20Auditorium%2C%20Thundiyil%2C%20Peravoor',
+      venueName: 'Royal Palace Convention Centre',
+      venueLocation: 'Mavoor Road, Kozhikode',
+      googleMapsUrl: 'https://maps.google.com/?q=Kozhikode+Kerala',
       startIsoUtc: '2026-12-13T12:30:00Z',
       endIsoUtc: '2026-12-13T16:30:00Z',
     },
@@ -64,58 +64,58 @@ export const PRESET_VISHNU_NAVYA: WeddingData = {
     label: 'Until the Muhurtham',
   },
   photos: {
-    hero: 'https://vishnuwedsnavya.com/assets/images/wedding-02-1200.jpg',
-    invitation: 'https://vishnuwedsnavya.com/assets/images/wedding-03-1200.jpg',
-    reception: 'https://vishnuwedsnavya.com/assets/images/wedding-05-1200.jpg',
-    banner: 'https://vishnuwedsnavya.com/assets/images/wedding-01-1200.jpg',
+    hero: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
+    invitation: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80',
+    reception: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+    banner: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80',
     gallery: [
-      { url: 'https://vishnuwedsnavya.com/assets/images/wedding-04-1200.jpg', alt: 'Vishnu and Navya holding rings' },
-      { url: 'https://vishnuwedsnavya.com/assets/images/wedding-03-1200.jpg', alt: 'Foreheads touching with rings' },
-      { url: 'https://vishnuwedsnavya.com/assets/images/wedding-01-1200.jpg', alt: 'Playful couple pose' },
-      { url: 'https://vishnuwedsnavya.com/assets/images/wedding-05-1200.jpg', alt: 'Standing against warm wall' },
-      { url: 'https://vishnuwedsnavya.com/assets/images/wedding-02-1200.jpg', alt: 'Couple seated on stage sofa' },
+      { url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80', alt: 'Wedding couple portrait' },
+      { url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80', alt: 'Wedding rings detail' },
+      { url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80', alt: 'Joyful celebration moment' },
+      { url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80', alt: 'Ceremony rituals' },
+      { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80', alt: 'Floral wedding arch' },
     ],
   },
   audio: {
     enabled: true,
-    title: 'Walk of the Bride',
-    src: 'https://vishnuwedsnavya.com/assets/audio/walk-of-the-bride-agam-v2.mp3',
+    title: 'Traditional Wedding Instrumental',
+    src: 'https://assets.mixkit.co/music/preview/mixkit-romantic-wedding-violin-1180.mp3',
   },
   meta: {
-    ogTitle: 'Vishnu & Navya | Wedding Invitation',
-    ogDescription: 'Sunday, 13 December 2026 · Alokan Auditorium, Kannadiparamba. Sharing Happiness.',
-    ogImage: 'https://vishnuwedsnavya.com/assets/images/og-image.jpg',
+    ogTitle: 'Aarav & Meera | Wedding Invitation',
+    ogDescription: 'Sunday, 13 December 2026 · Kozhikode & Wayanad. Sharing Happiness.',
+    ogImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
   },
 };
 
-export const PRESET_ATHIRA_JITHIN: WeddingData = {
-  slug: 'athira-jithin',
+export const PRESET_MODERN: WeddingData = {
+  slug: 'arjun-diya',
   template: 'modern-romance',
   themePreset: 'rose-champagne',
-  monogram: 'A & J',
-  hashtag: '#AthiraWedsJithin',
+  monogram: 'A & D',
+  hashtag: '#ArjunWedsDiya',
   couple: {
     groom: {
-      name: 'Jithin',
-      parents: 'S/o Mr K. Balakrishnan & Mrs Radha Balakrishnan',
-      address: ['Sreevalsam House', 'Kozhikode PO', 'Calicut'],
+      name: 'Arjun',
+      parents: 'S/o Mr Rajesh Sharma & Mrs Sunita Sharma',
+      address: ['Ananda Nilayam', 'Panampilly Nagar', 'Kochi, Kerala'],
     },
     bride: {
-      name: 'Athira',
-      parents: 'D/o Mr P. Ramachandran & Mrs Sobhana Ramachandran',
-      address: ['Anugraha', 'Meenangadi PO', 'Wayanad'],
+      name: 'Diya',
+      parents: 'D/o Mr Vivek Verma & Mrs Anita Verma',
+      address: ['Green Meadows', 'Kumarakom PO', 'Kottayam, Kerala'],
     },
   },
   overview: {
     eyebrow: 'Together with our families',
     weddingDateFormatted: 'Friday, 18 December 2026',
-    placesFormatted: 'Wayanad · Calicut',
+    placesFormatted: 'Kochi · Kumarakom',
   },
   invitationNote: {
     eyebrow: 'Cordially Invited',
     heading: 'A Celebration of Love',
     lead: 'We invite you to share in our joy and celebrate the beginning of our new chapter together.',
-    closing: 'Your presence and prayers will make our celebration complete.',
+    closing: 'Your presence and blessings will make our celebration complete.',
   },
   events: {
     ceremony: {
@@ -123,9 +123,9 @@ export const PRESET_ATHIRA_JITHIN: WeddingData = {
       eyebrow: 'Auspicious Muhurtham',
       dateStr: 'Friday, 18 December 2026',
       timeWindowStr: '10:00 AM – 11:15 AM',
-      venueName: 'Green Meadows Convention Centre',
-      venueLocation: 'Meenangadi, Wayanad',
-      googleMapsUrl: 'https://maps.google.com/?q=Meenangadi+Wayanad',
+      venueName: 'The Grand Heritage Banquet',
+      venueLocation: 'Marine Drive, Kochi',
+      googleMapsUrl: 'https://maps.google.com/?q=Kochi+Kerala',
       startIsoUtc: '2026-12-18T04:30:00Z',
       endIsoUtc: '2026-12-18T05:45:00Z',
     },
@@ -134,9 +134,9 @@ export const PRESET_ATHIRA_JITHIN: WeddingData = {
       eyebrow: 'Dinner & Music',
       dateStr: 'Saturday, 19 December 2026',
       timeWindowStr: '6:30 PM – 9:30 PM',
-      venueName: 'The Grand Calicut Hall',
-      venueLocation: 'Mavoor Road, Kozhikode',
-      googleMapsUrl: 'https://maps.google.com/?q=Kozhikode+Kerala',
+      venueName: 'Waterfront Lake Resort',
+      venueLocation: 'Kumarakom, Kottayam',
+      googleMapsUrl: 'https://maps.google.com/?q=Kumarakom+Kerala',
       startIsoUtc: '2026-12-19T13:00:00Z',
       endIsoUtc: '2026-12-19T16:00:00Z',
     },
@@ -147,26 +147,27 @@ export const PRESET_ATHIRA_JITHIN: WeddingData = {
     label: 'Countdown to the Muhurtham',
   },
   photos: {
-    hero: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
+    hero: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
     invitation: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80',
-    reception: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+    reception: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80',
     gallery: [
-      { url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80', alt: 'Wedding portrait' },
+      { url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80', alt: 'Wedding couple candid' },
       { url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80', alt: 'Ceremony rings' },
-      { url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80', alt: 'Reception moment' },
-      { url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80', alt: 'Celebration' },
-      { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80', alt: 'Bouquet & decor' },
+      { url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80', alt: 'Reception moment' },
+      { url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80', alt: 'Joyful celebration' },
+      { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80', alt: 'Floral venue decor' },
     ],
   },
   audio: {
     enabled: true,
-    title: 'Acoustic Celebration',
-    src: 'https://vishnuwedsnavya.com/assets/audio/walk-of-the-bride-agam-v2.mp3',
+    title: 'Acoustic Wedding Celebration',
+    src: 'https://assets.mixkit.co/music/preview/mixkit-romantic-wedding-violin-1180.mp3',
   },
   meta: {
-    ogTitle: 'Athira & Jithin | Wedding Invitation',
-    ogDescription: 'Friday, 18 December 2026 · Wayanad & Calicut. Join our celebration.',
+    ogTitle: 'Arjun & Diya | Wedding Invitation',
+    ogDescription: 'Friday, 18 December 2026 · Kochi & Kumarakom. Join our celebration.',
+    ogImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
   },
 };
 
@@ -177,12 +178,12 @@ export const PRESET_ATHIRA_JITHIN: WeddingData = {
 export async function getWeddingDataBySlug(slug: string): Promise<WeddingData | null> {
   const normalized = (slug || '').toLowerCase().trim();
 
-  // 1. Direct Presets Match
-  if (normalized === 'vishnu-navya' || normalized === 'vishnu-weds-navya') {
-    return PRESET_VISHNU_NAVYA;
+  // 1. Direct Presets Match (Generic sample demos)
+  if (normalized === 'aarav-meera' || normalized === 'demo-classical' || normalized === 'classical') {
+    return PRESET_CLASSICAL;
   }
-  if (normalized === 'athira-jithin' || normalized === 'athira-weds-jithin' || normalized === 'jithin-athira') {
-    return PRESET_ATHIRA_JITHIN;
+  if (normalized === 'arjun-diya' || normalized === 'demo-modern' || normalized === 'modern') {
+    return PRESET_MODERN;
   }
 
   // 2. Fetch from private Server Environment (Google Sheet or CSV)
@@ -193,7 +194,7 @@ export async function getWeddingDataBySlug(slug: string): Promise<WeddingData | 
     try {
       const url = sheetCsvUrl || `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
       const response = await fetch(url, { next: { revalidate: 60 } }); // Cache for 60 seconds (ISR)
-      
+
       if (response.ok) {
         const csvText = await response.text();
         const parsed = parseGoogleFormCsv(csvText, normalized);
@@ -204,9 +205,9 @@ export async function getWeddingDataBySlug(slug: string): Promise<WeddingData | 
     }
   }
 
-  // Fallback to default sample if slug is "demo" or unknown
+  // Fallback to default demo if slug is "demo" or unknown
   if (normalized === 'demo' || normalized === '') {
-    return PRESET_VISHNU_NAVYA;
+    return PRESET_CLASSICAL;
   }
 
   return null;
@@ -219,9 +220,6 @@ function parseGoogleFormCsv(csv: string, targetSlug: string): WeddingData | null
   const rows = csv.split('\n').map((row) => parseCsvRow(row));
   if (rows.length < 2) return null;
 
-  // Header row gives column index
-  // Typical Google Form fields:
-  // [Timestamp, Groom Name, Bride Name, Slug, Template, Date, Muhurtham Time, Venue Name, Venue Address, Map Link, Photo Drive Link, ...]
   const headers = rows[0].map((h) => h.toLowerCase().trim());
 
   for (let i = 1; i < rows.length; i++) {
@@ -300,10 +298,10 @@ function parseGoogleFormCsv(csv: string, targetSlug: string): WeddingData | null
           label: 'Until the Muhurtham',
         },
         photos: {
-          hero: heroDrive || PRESET_VISHNU_NAVYA.photos.hero,
-          invitation: inviteDrive || PRESET_VISHNU_NAVYA.photos.invitation,
-          banner: bannerDrive || PRESET_VISHNU_NAVYA.photos.banner,
-          gallery: galleryLinks.length > 0 ? galleryLinks : PRESET_VISHNU_NAVYA.photos.gallery,
+          hero: heroDrive || PRESET_CLASSICAL.photos.hero,
+          invitation: inviteDrive || PRESET_CLASSICAL.photos.invitation,
+          banner: bannerDrive || PRESET_CLASSICAL.photos.banner,
+          gallery: galleryLinks.length > 0 ? galleryLinks : PRESET_CLASSICAL.photos.gallery,
         },
         meta: {
           ogTitle: `${groomName} & ${brideName} | Wedding Invitation`,
