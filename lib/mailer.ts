@@ -76,12 +76,19 @@ export async function sendPreviewEmail({
 </html>
   `;
 
-  return transporter.sendMail({
-    from: process.env.EMAIL_FROM || `"Wedding Invitations" <${process.env.SMTP_USER}>`,
-    to: recipientEmail,
-    subject: `Your Wedding Invitation Draft is Ready! 💍 (${coupleNames})`,
-    html,
-  });
+  try {
+    const result = await transporter.sendMail({
+      from: process.env.EMAIL_FROM || `"Wedding Invitations" <${process.env.SMTP_USER}>`,
+      to: recipientEmail,
+      subject: `Your Wedding Invitation Draft is Ready! 💍 (${coupleNames})`,
+      html,
+    });
+    console.log('[Nodemailer Success] Sent email to', recipientEmail, 'MessageId:', result.messageId);
+    return { success: true, messageId: result.messageId };
+  } catch (err: any) {
+    console.error('[Nodemailer Error] Failed to send email to', recipientEmail, err.message);
+    return { success: false, error: err.message };
+  }
 }
 
 /**
@@ -135,10 +142,17 @@ export async function sendActivationEmail({
 </html>
   `;
 
-  return transporter.sendMail({
-    from: process.env.EMAIL_FROM || `"Wedding Invitations" <${process.env.SMTP_USER}>`,
-    to: recipientEmail,
-    subject: `Your Wedding Website is LIVE! 🎉 (${coupleNames})`,
-    html,
-  });
+  try {
+    const result = await transporter.sendMail({
+      from: process.env.EMAIL_FROM || `"Wedding Invitations" <${process.env.SMTP_USER}>`,
+      to: recipientEmail,
+      subject: `Your Wedding Website is LIVE! 🎉 (${coupleNames})`,
+      html,
+    });
+    console.log('[Nodemailer Success] Sent activation email to', recipientEmail, 'MessageId:', result.messageId);
+    return { success: true, messageId: result.messageId };
+  } catch (err: any) {
+    console.error('[Nodemailer Error] Failed to send activation email to', recipientEmail, err.message);
+    return { success: false, error: err.message };
+  }
 }
